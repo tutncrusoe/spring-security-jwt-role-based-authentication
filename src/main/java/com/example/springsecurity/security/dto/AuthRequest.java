@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @Setter
 public class AuthRequest {
+
     @NotNull
     @Email
     @Length(min = 5, max = 50)
