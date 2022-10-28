@@ -17,7 +17,8 @@ import org.springframework.test.annotation.Rollback;
 @Rollback(false)
 public class UserRepositoryTests {
 
-    @Autowired private UserRepository repo;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testCreateUser() {
@@ -25,7 +26,7 @@ public class UserRepositoryTests {
         String password = passwordEncoder.encode("password");
 
         User newUser = new User("huy@email.com", password);
-        User savedUser = repo.save(newUser);
+        User savedUser = userRepository.save(newUser);
 
         assertThat(savedUser).isNotNull();
         assertThat(savedUser.getId()).isGreaterThan(0);
