@@ -5,6 +5,7 @@ import com.example.springsecurity.product.service.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -13,20 +14,23 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductRestResource {
 
-    private final ProductRepository repo;
+    private final ProductRepository productRepository;
 
-    public ProductRestResource(ProductRepository repo) {
-        this.repo = repo;
+    public ProductRestResource(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     @GetMapping
+    @RolesAllowed({"ROLE_ADMIN", "ROLE_USER", "ROLE_CUSTOMER"})
     public List<Product> list() {
-        return repo.findAll();
+        return productRepository.findAll();
     }
 
     @PostMapping
+
+    @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity<Product> create(@RequestBody @Valid Product product) {
-        Product savedProduct = repo.save(product);
+        Product savedProduct = productRepository.save(product);
         URI productURI = URI.create("/products/" + savedProduct.getId());
         return ResponseEntity.created(productURI).body(savedProduct);
     }

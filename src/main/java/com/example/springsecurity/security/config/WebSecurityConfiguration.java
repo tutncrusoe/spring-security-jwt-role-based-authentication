@@ -2,10 +2,10 @@ package com.example.springsecurity.security.config;
 
 import com.example.springsecurity.security.jwt.JwtTokenFilter;
 import com.example.springsecurity.user.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,15 +18,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+        prePostEnabled = false,
+        securedEnabled = false,
+        jsr250Enabled = true
+)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
+    private final JwtTokenFilter jwtTokenFilter;
 
-    public WebSecurityConfiguration(UserRepository userRepository) {
+    public WebSecurityConfiguration(UserRepository userRepository, JwtTokenFilter jwtTokenFilter) {
         this.userRepository = userRepository;
+        this.jwtTokenFilter = jwtTokenFilter;
     }
 
     @Bean

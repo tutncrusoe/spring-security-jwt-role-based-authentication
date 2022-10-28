@@ -36,9 +36,9 @@ public class JwtTokenUtil {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException ex) {
-            LOGGER.error("JWT expired", ex.getMessage());
+            LOGGER.error("JWT expired", ex);
         } catch (IllegalArgumentException ex) {
-            LOGGER.error("Token is null, empty or only whitespace", ex.getMessage());
+            LOGGER.error("Token is null, empty or only whitespace", ex);
         } catch (MalformedJwtException ex) {
             LOGGER.error("JWT is invalid", ex);
         } catch (UnsupportedJwtException ex) {
